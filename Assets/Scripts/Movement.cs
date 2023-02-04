@@ -22,6 +22,7 @@ public class Movement : MonoBehaviour{
     
     //Horizontal movement
     private float _moveX;
+    private bool _facingLeft;
     
     //Movement states
     private MovementState _currentState;
@@ -63,13 +64,19 @@ public class Movement : MonoBehaviour{
     private bool _canDash = true;
 
     public GameObject plug;
+    private SpriteRenderer _plugSr;
     public FixedJoint2D plugJoint;
+    public Transform plugPoint;
+    private LineController _lineController;
     
     private void Start() {
         _rb = GetComponent<Rigidbody2D>();
         _bc = GetComponent<Collider2D>();
         _sr = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
+
+        _plugSr = plug.GetComponent<SpriteRenderer>();
+        _lineController = plug.GetComponentInChildren<LineController>();
         
         _currentAirJumps = airJumpAmount;
         _currentCoyoteTime = coyoteTime;
@@ -112,7 +119,9 @@ public class Movement : MonoBehaviour{
     private void TogglePickup() {
         if (plugJoint.enabled) {
             plugJoint.enabled = false;
-            plugJoint.GetComponent<Rigidbody2D>().AddForce(_rb.velocity.normalized * 5, ForceMode2D.Impulse);
+            var force = _rb.velocity.normalized * 0.4f;
+            plugJoint.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Impulse);
+            _rb.AddForce(-force, ForceMode2D.Impulse);
             return;
         }
 
@@ -121,14 +130,22 @@ public class Movement : MonoBehaviour{
             return;
         }
 
-        if (plugPos.y <= transform.position.y) {
-            plugPos.y = transform.position.y + 0.01f;
-            plug.transform.position = plugPos;
-        }
+        plugJoint.connectedAnchor = transform.InverseTransformPoint(plugPos);
         plugJoint.enabled = true;
+        _lineController.timer.timerIsRunning = true;
     }
 
     private void FixedUpdate() {
+
+        if (plugJoint.enabled) {
+            var plugTargetPos = (Vector2)plugPoint.localPosition;
+            if (_facingLeft) plugTargetPos.x = -plugTargetPos.x;
+            plugJoint.connectedAnchor =
+                Vector2.MoveTowards(plugJoint.connectedAnchor, plugTargetPos, Time.fixedDeltaTime * 5);
+            _plugSr.flipX = plugJoint.connectedAnchor.x < 0;
+            Debug.Log(_plugSr.flipX, _plugSr);
+        }
+        
         if (_currentState is MovementState.Dash) return;
         
         var velocity = _rb.velocity;
@@ -177,8 +194,14 @@ public class Movement : MonoBehaviour{
         
         switch (_moveX) {
             case 0: _currentState = MovementState.Idle; break;
-            case < 0: _sr.flipX = true; break;
-            case > 0: _sr.flipX = false; break;
+            case < 0: 
+                _sr.flipX = true;
+                _facingLeft = true;
+                break;
+            case > 0: 
+                _sr.flipX = false;
+                _facingLeft = false; 
+                break;
         }
 
         // if (_currentState == _lastState) return;

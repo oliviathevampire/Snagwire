@@ -10,6 +10,6 @@ public class BouncePad : MonoBehaviour {
 	}
 
 	private void Jump(Rigidbody2D rb) {
-		rb.velocity = direction * jumpForce;
+		rb.AddForce(direction * jumpForce, ForceMode2D.Impulse);
 	}
 }
