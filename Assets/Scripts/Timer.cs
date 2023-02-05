@@ -1,13 +1,11 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour {
 	public float timeRemaining = 10;
 	public bool timerIsRunning;
 	public TMP_Text timeText;
-	public Image timeImage;
 
 	public Action onTimerRunOut;
 	private float _countdownTimer;
@@ -28,12 +26,8 @@ public class Timer : MonoBehaviour {
 			if(_countdownTimer >= 0.5) {
 				timeText.color = Color.red;
 			}
-			if(_countdownTimer >= 0.6) {
-				timeImage.enabled = false;
-			}
 			if (!(_countdownTimer >= 1)) return;
 			timeText.color = Color.white;
-			timeImage.enabled = true;
 			_countdownTimer = 0;
 		}
 		else {

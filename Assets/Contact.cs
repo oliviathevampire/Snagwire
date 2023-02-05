@@ -16,7 +16,7 @@ public class Contact : MonoBehaviour {
 		col.gameObject.GetComponent<FixedJoint2D>().connectedAnchor = new Vector2(-0.2f, 0.1f);
 		lineController.plugged = true;
 		lineController.timer.timerIsRunning = false;
-		// Invoke(nameof(ActivateWinPanel), 2f);
+		Invoke(nameof(ActivateWinPanel), 2f);
 	}
 
 	private void ActivateWinPanel() {
