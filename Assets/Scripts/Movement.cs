@@ -137,7 +137,7 @@ public class Movement : MonoBehaviour{
 
     private void FixedUpdate() {
 
-        if (plugJoint.enabled) {
+        if (plugJoint.enabled && plugJoint.connectedBody == _rb) {
             var plugTargetPos = (Vector2)plugPoint.localPosition;
             if (_facingLeft) plugTargetPos.x = -plugTargetPos.x;
             plugJoint.connectedAnchor =
