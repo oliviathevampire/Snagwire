@@ -1024,10 +1024,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e00b19e25194c544cb98ea527d7832c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_topLeftColor: {r: 1, g: 0, b: 0, a: 1}
-  m_topRightColor: {r: 1, g: 0.42313176, b: 0, a: 1}
-  m_bottomRightColor: {r: 1, g: 0, b: 0, a: 1}
-  m_bottomLeftColor: {r: 1, g: 0.42356974, b: 0, a: 1}
+  m_topLeftColor: {r: 0.2924528, g: 0.2924528, b: 0.2924528, a: 1}
+  m_topRightColor: {r: 0.35875756, g: 0.51551473, b: 0.5471698, a: 1}
+  m_bottomRightColor: {r: 0.29411766, g: 0.29411766, b: 0.29411766, a: 1}
+  m_bottomLeftColor: {r: 0.36078432, g: 0.5176471, b: 0.54901963, a: 1}
 --- !u!1 &1866856619
 GameObject:
   m_ObjectHideFlags: 0
